@@ -1,9 +1,13 @@
-import { useState } from 'react'
+import CharacterList from './components/CharacterList'
 
 function App() {
 
   return (
-    <h1>Hello World</h1>
+    <div>
+      <h1>Rick and Morty</h1>
+
+      <CharacterList/>
+    </div>
   )
 }
 
