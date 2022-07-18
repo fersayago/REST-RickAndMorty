@@ -1,29 +1,41 @@
-import { useState, useEffect} from 'react'
-import Character from './Character'
+import { useState, useEffect } from "react";
+import Character from "./Character";
+import Navpage from "./Navpage";
 
 const CharacterList = () => {
-  const [characters, setCharacters] = useState([])
-  
+  const [characters, setCharacters] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
+
   const fetchData = async () => {
-    const response = await fetch('https://rickandmortyapi.com/api/character/');
+    const response = await fetch(`https://rickandmortyapi.com/api/character?page=${page}`);
     const data = await response.json();
+    setLoading(false);
     setCharacters(data.results);
-  }
+  };
   useEffect(() => {
-    fetchData()
-  }, [])
+    fetchData();
+  }, [page]);
 
   return (
-    <div>
-      {
-        characters.map(character => {
-          return (
-            <Character character={character} key={character.id}/>
-          )
-        })
-      }
-    </div>
-  )
-}
+    <div className="container ">
+      <Navpage page={page} setPage={setPage}/>
 
-export default CharacterList
+      {loading ? (
+        <h1>Loading...</h1>
+      ) : (
+        <div className="row">
+          {characters.map((character) => {
+            return (
+              <div className="col-md-4" key={character.id}>
+                <Character character={character} key={character.id} />
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default CharacterList;
